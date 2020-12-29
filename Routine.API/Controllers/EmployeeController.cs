@@ -18,6 +18,7 @@ namespace Routine.API.Controllers
 {
     [ApiController]
     [Route("api/companies/{companyId}/employees")]
+    [ResponseCache(CacheProfileName = "120sCacheProfile")]
     public class EmployeeController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -45,6 +46,7 @@ namespace Routine.API.Controllers
 
 
         [HttpGet(Name = nameof(GetEmployeesForCompany))]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesForCompany(Guid companyId,
             [FromQuery]EmployeeDtoParameters parameters)
         {

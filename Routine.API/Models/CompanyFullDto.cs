@@ -13,6 +13,9 @@ namespace Routine.API.Models
         public string Industry { get; set; }
         public string Product { get; set; }
 
-   
+        public DateTimeOffset? BankruptTime { get; set; }
+
+
+
     }
 }

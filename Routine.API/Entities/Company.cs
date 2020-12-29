@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Routine.API.Services;
 
 namespace Routine.API.Entities
 {
@@ -18,6 +19,8 @@ namespace Routine.API.Entities
         public string Country { get; set; }
         public string Industry { get; set; }
         public string Product { get; set; }
+
+        public DateTimeOffset? BankruptTime { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
 

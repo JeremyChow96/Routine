@@ -11,6 +11,8 @@ namespace Routine.API.Profiles
             CreateMap<Company, CompanyDto>().ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Name));
             CreateMap<CompanyAddDto, Company>();
             CreateMap<Company, CompanyFullDto>();
+            CreateMap<CompanyAddWithBankruptTimeDto, Company>();
+
 
         }
     }

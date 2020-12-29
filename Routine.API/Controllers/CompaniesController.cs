@@ -10,6 +10,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Routine.API.ActionConstrains;
 using Routine.API.DtoParameters;
 using Routine.API.Entities;
 using Routine.API.Helpers;
@@ -209,7 +210,14 @@ namespace Routine.API.Controllers
 
         }
 
+
+
+
         [HttpPost(Name=nameof(CreateCompany))]
+        [RequestHeaderMatchesMediaType("Content-Type","application/json",
+            "application/vnd.company.companyforcreation+json")]
+        [Consumes("application/json",
+            "application/vnd.company.companyforcreation+json")]
         public async Task<ActionResult<CompanyAddDto>> CreateCompany(CompanyAddDto company)
         {
             //core2.1
@@ -235,7 +243,34 @@ namespace Routine.API.Controllers
             return CreatedAtRoute(nameof(GetCompany), new {companyId = linkedDict["Id"] }, linkedDict);
         }
 
-   
+
+
+        [HttpPost(Name = nameof(CreateCompanyWithBankruptTimeDto))] 
+        [RequestHeaderMatchesMediaType("Content-Type", 
+            "application/vnd.company.companyforcreationwithbankrupttime+json")]
+        [Consumes("application/json",
+            "application/vnd.company.companyforcreationwithbankrupttime+json")]
+        public async Task<ActionResult<CompanyAddDto>> CreateCompanyWithBankruptTimeDto(CompanyAddWithBankruptTimeDto company)
+        {
+
+            var entity = _mapper.Map<Company>(company);
+            _companyRepository.AddCompany(entity);
+            await _companyRepository.SaveAsync();
+
+            var returnDto = _mapper.Map<CompanyDto>(entity);
+            var links = CreateLinksForCompany(returnDto.Id, null);
+
+            var linkedDict = returnDto.ShapeData(null) as IDictionary<string, object>;
+
+            linkedDict.Add("links", links);
+
+
+
+
+            return CreatedAtRoute(nameof(GetCompany), new { companyId = linkedDict["Id"] }, linkedDict);
+        }
+
+
 
 
         [HttpDelete("{companyId}",Name = nameof(DeleteCompany))]

@@ -28,9 +28,18 @@ namespace Routine.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddResponseCaching();
+
+
             services.AddControllers(setup =>
             {
                 setup.ReturnHttpNotAcceptable = true;
+                setup.CacheProfiles.Add("120sCacheProfile",new CacheProfile
+                {
+                    Duration = 120
+                });
+
                 //   setup.InputFormatters.Add( new XmlDataContractSerializerInputFormatter(setup));
             }).AddNewtonsoftJson(setup =>
                 {
@@ -95,6 +104,8 @@ namespace Routine.API
                     });
                 });
             }
+
+            app.UseResponseCaching();
 
             app.UseRouting();
 
